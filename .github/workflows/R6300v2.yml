@@ -17,6 +17,8 @@ on:
   #   - cron: 0 20 * * *
   # release:
   #   types: [published]
+env:
+  SSH_ACTIONS: true
 
 jobs:
 
@@ -162,11 +164,13 @@ jobs:
           #CONFIG_PACKAGE_luci-app-openvpn=y
           #CONFIG_PACKAGE_luci-app-openvpn-server=y
           #CONFIG_PACKAGE_luci-app-qbittorrent=y
+          CONFIG_PACKAGE_luci-app-ssr-plus=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
           #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
           #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
           #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
-          #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
+          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
           CONFIG_PACKAGE_luci-app-ttyd=y
           #CONFIG_PACKAGE_luci-app-v2ray-server=y
           #CONFIG_PACKAGE_luci-app-verysync=y
@@ -174,13 +178,14 @@ jobs:
           #CONFIG_PACKAGE_luci-app-wireguard=y
           #CONFIG_PACKAGE_luci-app-wrtbwmon=y
           #CONFIG_PACKAGE_luci-app-qbittorrent=y
-          CONFIG_PACKAGE_trojan=y
+          #CONFIG_PACKAGE_trojan=y
+          CONFIG_PACKAGE_luci-app-upnp=y
           EOF
 
           # LuCI主题:
           cat >> .config <<EOF
           CONFIG_PACKAGE_luci-theme-argon=y
-          CONFIG_PACKAGE_luci-theme-netgear=y
+          CONFIG_PACKAGE_luci-theme-material=y
           EOF
 
           # 常用软件包:
@@ -206,6 +211,10 @@ jobs:
 
           sed -i 's/^[ \t]*//g' ./.config
           make defconfig
+          
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
+        if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
 
       - name: Make download
         run: |
