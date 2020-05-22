@@ -57,7 +57,7 @@ jobs:
 
       - name: Update feeds
         run: |
-          sed -i 's/\#//g' ./feeds.conf.default
+          sed -e '4a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -101,8 +101,6 @@ jobs:
 
           # 编译R6300V2固件:
           cat >> .config <<EOF
-          CONFIG_MODULES=y
-          CONFIG_HAVE_DOT_CONFIG=y
           CONFIG_TARGET_bcm53xx=y
           CONFIG_TARGET_bcm53xx_DEVICE_netgear-r6300-v2=y
           # CONFIG_TARGET_x86=y
@@ -112,14 +110,6 @@ jobs:
 
           # 固件压缩:
           cat >> .config <<EOF
-          CONFIG_TARGET_ROOTFS_EXT4FS=y
-          CONFIG_TARGET_EXT4_RESERVED_PTC=0
-          CONFIG_TARGET_EXT4_BLOCKSIZE_4K=y
-          CONFIG_TARGET_EXT4_BLOCKSIZE=4096
-          CONFIG_TARGET_ROOTFS_SQUASHFS=y
-          CONFIG_TARGET_SQUASHFS_BLOCK_SIZE=256
-          CONFIG_TARGET_UBIFS_FREE_SPACE_FIXUP=y
-          CONFIG_TARGET_UBIFS_JOURNAL_SIZE=""
           CONFIG_TARGET_IMAGES_GZIP=y
           EOF
 
@@ -182,7 +172,7 @@ jobs:
           #CONFIG_PACKAGE_trojan=y
           CONFIG_PACKAGE_luci-app-upnp=y
           CONFIG_PACKAGE_luci-app-shairplay=y
-          CONFIG_PACKAGE_luci-app-wol=n
+          #CONFIG_PACKAGE_luci-app-wol=y
           EOF
 
           # LuCI主题:
