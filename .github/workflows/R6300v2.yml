@@ -57,6 +57,7 @@ jobs:
 
       - name: Update feeds
         run: |
+          sed -i 's/\"#src-git\"/\"src-git\"/g' ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -165,7 +166,7 @@ jobs:
           #CONFIG_PACKAGE_luci-app-openvpn-server=y
           #CONFIG_PACKAGE_luci-app-qbittorrent=y
           CONFIG_PACKAGE_luci-app-ssr-plus=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
+          #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
           #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
           #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
           #CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
@@ -180,6 +181,8 @@ jobs:
           #CONFIG_PACKAGE_luci-app-qbittorrent=y
           #CONFIG_PACKAGE_trojan=y
           CONFIG_PACKAGE_luci-app-upnp=y
+          CONFIG_PACKAGE_luci-app-shairplay=y
+          CONFIG_PACKAGE_luci-app-wol=n
           EOF
 
           # LuCI主题:
