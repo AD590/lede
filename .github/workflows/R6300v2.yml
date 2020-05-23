@@ -57,7 +57,9 @@ jobs:
 
       - name: Update feeds
         run: |
-          sed -e '4a\src-git helloworld https://github.com/fw876/helloworld' ./feeds.conf.default
+   #       sed -i '$a src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
+          sed -i '$a src-git kenzok https://github.com/kenzok8/small.git' feeds.conf.default
+          sed -i '$a src-git kenzok8 https://github.com/kenzok8/openwrt-packages.git' feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -173,6 +175,7 @@ jobs:
           CONFIG_PACKAGE_luci-app-upnp=y
           CONFIG_PACKAGE_luci-app-shairplay=y
           #CONFIG_PACKAGE_luci-app-wol=y
+          CONFIG_PACKAGE_luci-app-passwall=y
           EOF
 
           # LuCI主题:
@@ -235,3 +238,11 @@ jobs:
         with:
           name: OpenWrt firmware
           path: ./bin/targets/
+      - name: upload to cowshare
+        run : tar -jcvf ./op-firmware ./bin/targets/
+              curl -sL https://git.io/cowtransfer | sh 
+              ./cowtransfer-upload op-firmware 2>&1 | tee milk
+              cat milk
+              echo "$(cat milk)"
+              
+
